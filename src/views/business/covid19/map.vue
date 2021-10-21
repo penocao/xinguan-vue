@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
-    <el-breadcrumb separator="/" style="padding-left:10px;padding-bottom:10px;font-size:12px;">
+    <el-breadcrumb
+      separator="/"
+      style="padding-left: 10px; padding-bottom: 10px; font-size: 12px"
+    >
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>健康报备</el-breadcrumb-item>
       <el-breadcrumb-item>全国疫情</el-breadcrumb-item>
@@ -9,92 +12,154 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <div class="grid-content bg-purple">
-            <el-tabs type="border-card">
-              <el-tab-pane label="疫情概览">
-                <el-table  v-loading="loading" border :data="info" style="width: 100%" height="495">
-                  <el-table-column prop="name" label="名称" width="150"></el-table-column>
-                  <el-table-column prop="value" label="数量" >
-                    <template slot-scope="scope">
-                      <el-tag effect="plain" size="mini">{{scope.row.value}}人</el-tag>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="yesterday" label="较昨日" width="100">
-                    <template slot-scope="scope">
-                      <el-tag effect="plain" size="mini" v-if="scope.row.yesterday>0" type="danger">{{scope.row.yesterday}} 人</el-tag>
-                      <el-tag effect="plain" size="mini" v-else type="success">{{scope.row.yesterday}}人</el-tag>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="name" label="时间"> <span style="font-size: 11px;">{{times}}</span></el-table-column>
-                </el-table>
-              </el-tab-pane>
-              <el-tab-pane label="TOP10城市" >
-                <el-table
-
-                        height="495"
-                        border
-                    :data="top10"
-                    style="width: 100%;font-size: 10px;">
-
-              <el-table-column
-
-                      prop="name"
-                      label="城市名称"
-                      width="180">
-              </el-table-column>
-              <el-table-column
-
-                      prop="ename"
-                      label="English">
-              </el-table-column>
-                  <el-table-column
-                          prop="jwsrNum"
-                          label="确诊人数"
-                          width="180">
-                    <template slot-scope="scope">
-                      <el-tag v-text="scope.row.jwsrNum+'人'" size="mini" type="danger" effect="plain"></el-tag>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </el-tab-pane>
-
-            </el-tabs>
-
-
-
+          <el-tabs type="border-card">
+            <el-tab-pane label="疫情概览">
+              <el-table
+                v-loading="loading"
+                border
+                :data="info"
+                style="width: 100%"
+                height="495"
+              >
+                <el-table-column
+                  prop="name"
+                  label="名称"
+                  width="150"
+                ></el-table-column>
+                <el-table-column prop="value" label="数量">
+                  <template slot-scope="scope">
+                    <el-tag effect="plain" size="mini"
+                      >{{ scope.row.value }}人</el-tag
+                    >
+                  </template>
+                </el-table-column>
+                <el-table-column prop="yesterday" label="较昨日" width="100">
+                  <template slot-scope="scope">
+                    <el-tag
+                      effect="plain"
+                      size="mini"
+                      v-if="scope.row.yesterday > 0"
+                      type="danger"
+                      >{{ scope.row.yesterday }} 人</el-tag
+                    >
+                    <el-tag effect="plain" size="mini" v-else type="success"
+                      >{{ scope.row.yesterday }}人</el-tag
+                    >
+                  </template>
+                </el-table-column>
+                <el-table-column prop="name" label="时间">
+                  <span style="font-size: 11px">{{
+                    times
+                  }}</span></el-table-column
+                >
+              </el-table>
+            </el-tab-pane>
+            <el-tab-pane label="TOP10城市">
+              <el-table
+                height="495"
+                border
+                :data="top10"
+                style="width: 100%; font-size: 10px"
+              >
+                <el-table-column prop="name" label="城市名称" width="180">
+                </el-table-column>
+                <el-table-column prop="ename" label="English">
+                </el-table-column>
+                <el-table-column prop="jwsrNum" label="确诊人数" width="180">
+                  <template slot-scope="scope">
+                    <el-tag
+                      v-text="scope.row.jwsrNum + '人'"
+                      size="mini"
+                      type="danger"
+                      effect="plain"
+                    ></el-tag>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
+          </el-tabs>
         </div>
       </el-col>
       <el-col :span="12">
         <div class="grid-content bg-purple-light">
           <el-card>
-            <div ref="mapbox" style="height:520px;"></div>
+            <div ref="mapbox" style="height: 520px"></div>
           </el-card>
         </div>
       </el-col>
     </el-row>
-    <el-row :gutter="10" style="margin-top:10px;">
+    <el-row :gutter="10" style="margin-top: 10px">
       <el-col :span="24">
         <div class="grid-content bg-purple">
           <el-card>
-            <el-table  stripe  :data="tableData" style="width: 100%;">
+            <el-table stripe :data="tableData" style="width: 100%">
               <el-table-column type="expand">
                 <template slot-scope="scope">
-                  <el-table  :data="scope.row.city" style="width: 100%">
-                    <el-table-column prop="name" label="城市/区" width="200"></el-table-column>
+                  <el-table :data="scope.row.city" style="width: 100%">
+                    <el-table-column
+                      prop="name"
+                      label="城市/区"
+                      width="200"
+                    ></el-table-column>
 
-                    <el-table-column sortable label="现存确诊" prop="econNum"></el-table-column>
-                    <el-table-column sortable label="累计确诊" prop="cureNum"></el-table-column>
-                    <el-table-column sortable label="疑似" prop="susNum"></el-table-column>
-                    <el-table-column sortable label="死亡" prop="deathNum"></el-table-column>
-                    <el-table-column sortable label="现存无症状" prop="asymptomNum"></el-table-column>
+                    <el-table-column
+                      sortable
+                      label="现存确诊"
+                      prop="econNum"
+                    ></el-table-column>
+                    <el-table-column
+                      sortable
+                      label="累计确诊"
+                      prop="cureNum"
+                    ></el-table-column>
+                    <el-table-column
+                      sortable
+                      label="疑似"
+                      prop="susNum"
+                    ></el-table-column>
+                    <el-table-column
+                      sortable
+                      label="死亡"
+                      prop="deathNum"
+                    ></el-table-column>
+                    <el-table-column
+                      sortable
+                      label="现存无症状"
+                      prop="asymptomNum"
+                    ></el-table-column>
                   </el-table>
                 </template>
               </el-table-column>
-              <el-table-column sortable label="省份" prop="name"></el-table-column>
-              <el-table-column sortable label="现存确诊" prop="econNum"></el-table-column>
-              <el-table-column sortable label="累计确诊" prop="value"></el-table-column>
-              <el-table-column sortable label="疑似" prop="susNum"></el-table-column>
-              <el-table-column sortable label="死亡" prop="deathNum"></el-table-column>
-              <el-table-column sortable label="现存无症状" prop="asymptomNum"></el-table-column>
+              <el-table-column
+                sortable
+                label="省份"
+                prop="name"
+              ></el-table-column>
+              <el-table-column
+                sortable
+                label="现存确诊"
+                prop="econNum"
+              ></el-table-column>
+              <el-table-column
+                sortable
+                label="累计确诊"
+                prop="value"
+              ></el-table-column>
+              <el-table-column
+                sortable
+                label="疑似"
+                prop="susNum"
+              ></el-table-column>
+              <el-table-column
+                sortable
+                label="死亡"
+                prop="deathNum"
+              ></el-table-column>
+              <el-table-column
+                sortable
+                label="现存无症状"
+                prop="asymptomNum"
+              ></el-table-column>
             </el-table>
           </el-card>
         </div>
@@ -111,9 +176,9 @@ import jsonp from "jsonp";
 const option = {
   title: {
     text: "疫情地图",
-    link: "https://baidu.com",
+    link: "http://baidu.com",
     subtext: "疫情地图",
-    sublink: "https://baidu.com"
+    sublink: "http://baidu.com"
   },
   series: [
     {
@@ -171,16 +236,16 @@ const option = {
 };
 export default {
   name: "HelloWorld",
-  data() {
+  data () {
     return {
-      times:'',
-      loading:true,
+      times: '',
+      loading: true,
       info: [],
       tableData: [],
-      top10:[],
+      top10: [],
     };
   },
-  mounted() {
+  mounted () {
     //template挂载到页面时调用
     this.getData(); //执行getData方法
 
@@ -188,9 +253,9 @@ export default {
     this.mychart.setOption(option);
   },
   methods: {
-    getData() {
+    getData () {
       jsonp(
-        "https://interface.sina.cn/news/wap/fymap2020_data.d.json?_=1580892522427", //接口
+        "http://interface.sina.cn/news/wap/fymap2020_data.d.json?_=1580892522427", //接口
         {},
         (err, data) => {
           if (!err) {
@@ -212,7 +277,7 @@ export default {
     /**
      * 构建表格数据:每日新增....
      */
-    buildTable(data) {
+    buildTable (data) {
       var data = data.data;
       let data1 = {
         name: "现存确诊",
@@ -254,8 +319,8 @@ export default {
         value: data.sustotal,
         yesterday: data.add_daily["wjw_addsus_new"]
       };
-      this.times=data.times;
-      this.top10=data.jwsrTop;
+      this.times = data.times;
+      this.top10 = data.jwsrTop;
 
       this.info.push(data1);
       this.info.push(data2);
@@ -265,7 +330,7 @@ export default {
       this.info.push(data6);
       this.info.push(data7);
       this.info.push(data8);
-      this.loading=false;
+      this.loading = false;
     }
   }
 };

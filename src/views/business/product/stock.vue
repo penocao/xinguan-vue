@@ -1,7 +1,10 @@
 <template>
   <div id="stocks">
     <!-- 面包导航 -->
-    <el-breadcrumb separator="/" style="padding-left:10px;padding-bottom:10px;font-size:12px;">
+    <el-breadcrumb
+      separator="/"
+      style="padding-left: 10px; padding-bottom: 10px; font-size: 12px"
+    >
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>物资管理</el-breadcrumb-item>
       <el-breadcrumb-item>库存维护</el-breadcrumb-item>
@@ -11,67 +14,105 @@
         <div class="grid-content bg-purple-dark">
           <el-card class="box-card">
             <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-            <div id="tianxing" style="width: 650px;height:350px;"></div>
+            <div id="tianxing" style="width: 650px; height: 350px"></div>
           </el-card>
-          <el-card class="box-card" style="margin-top:10px;">
+          <el-card class="box-card" style="margin-top: 10px">
             <!-- 库存饼图 -->
-            <div id="bingtu" style="width: 590px;height:225px;"></div>
+            <div id="bingtu" style="width: 590px; height: 225px"></div>
           </el-card>
         </div>
       </el-col>
       <el-col :span="11">
         <div class="grid-content bg-purple-dark">
           <el-card class="box-card">
-            <el-form size="mini" :inline="true" :model="queryMap" class="demo-form-inline">
+            <el-form
+              size="mini"
+              :inline="true"
+              :model="queryMap"
+              class="demo-form-inline"
+            >
               <el-form-item>
                 <el-cascader
-                        placeholder="请选择分类查询"
-                        :change-on-select="true"
-                        @change="selectChange"
-                        v-model="categorykeys"
-                        :props="searchSelectProps"
-                        :options="catetorys"
-                        clearable
+                  placeholder="请选择分类查询"
+                  :change-on-select="true"
+                  @change="selectChange"
+                  v-model="categorykeys"
+                  :props="searchSelectProps"
+                  :options="catetorys"
+                  clearable
                 ></el-cascader>
               </el-form-item>
 
               <el-form-item>
-                <el-input clearable @clear="search" v-model="queryMap.name" placeholder="物资名称" ></el-input>
+                <el-input
+                  clearable
+                  @clear="search"
+                  v-model="queryMap.name"
+                  placeholder="物资名称"
+                ></el-input>
               </el-form-item>
 
               <el-form-item>
-                <el-button size="mini" type="primary" @click="search" icon="el-icon-search">查询</el-button>
+                <el-button
+                  size="mini"
+                  type="primary"
+                  @click="search"
+                  icon="el-icon-search"
+                  >查询</el-button
+                >
               </el-form-item>
             </el-form>
             <el-table height="530" border :data="tableData" style="width: 100%">
-              <el-table-column prop="imageUrl" label="图片" align="center" width="80" padding="0px">
+              <el-table-column
+                prop="imageUrl"
+                label="图片"
+                align="center"
+                width="80"
+                padding="0px"
+              >
                 <!--            <template slot-scope="scope">-->
                 <!--              <img-->
                 <!--                slot="error"-->
-                <!--                :src="'https://www.zykhome.club/'+scope.row.imageUrl"-->
+                <!--                :src="'http://101.35.153.185/'+scope.row.imageUrl"-->
                 <!--                alt-->
                 <!--                style="width: 55px;height:55px"-->
                 <!--              />-->
                 <!--            </template>-->
                 <template slot-scope="scope">
-                  <el-popover placement="right"  trigger="hover">
-                    <img :src="'https://www.zykhome.club/'+scope.row.imageUrl"  style="height: 200px;width: 200px"/>
-                    <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 21px;width: 21px;cursor: pointer">
+                  <el-popover placement="right" trigger="hover">
+                    <img
+                      :src="'http://101.35.153.185/' + scope.row.imageUrl"
+                      style="height: 200px; width: 200px"
+                    />
+                    <img
+                      slot="reference"
+                      :src="'http://101.35.153.185/' + scope.row.imageUrl"
+                      :alt="scope.row.imgUrl"
+                      style="height: 21px; width: 21px; cursor: pointer"
+                    />
                   </el-popover>
                 </template>
               </el-table-column>
-              <el-table-column prop="name" label="名称" width="140"></el-table-column>
-              <el-table-column prop="model" label="规格" width="120"></el-table-column>
+              <el-table-column
+                prop="name"
+                label="名称"
+                width="140"
+              ></el-table-column>
+              <el-table-column
+                prop="model"
+                label="规格"
+                width="120"
+              ></el-table-column>
               <el-table-column prop="stock" label="库存">
-                  <template slot-scope="scope">
-                      <el-tag size="mini" closable>{{scope.row.stock}}</el-tag>
-                  </template>
+                <template slot-scope="scope">
+                  <el-tag size="mini" closable>{{ scope.row.stock }}</el-tag>
+                </template>
               </el-table-column>
               <el-table-column prop="unit" label="单位"></el-table-column>
             </el-table>
             <!-- 分页 -->
             <el-pagination
-              style="margin-top:20px;"
+              style="margin-top: 20px"
               background
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -90,7 +131,7 @@
 <script>
 import echarts from "echarts";
 export default {
-  data() {
+  data () {
     return {
       catetorys: [], //类别选择
       searchSelectProps: {
@@ -100,7 +141,7 @@ export default {
         children: "children",
         checkStrictly: true
       }, //级联搜索选择器配置项
-      categorykeys: [] ,
+      categorykeys: [],
       total: 0,
       tableData: [],
       queryMap: { pageSize: 9, pageNum: 1 },
@@ -115,19 +156,19 @@ export default {
     /**
      * 搜索
      */
-    search() {
+    search () {
       this.queryMap.pageNum = 1;
       this.getStockList();
     },
     /**
      * 加载库存信息
      */
-    async getStockList() {
+    async getStockList () {
       const { data: res } = await this.$http.get("business/product/findProductStocks", {
         params: this.queryMap
       });
       if (!res.success) {
-        return this.$message.error("获取物资库存列表失败:"+res.data.errorMsg);
+        return this.$message.error("获取物资库存列表失败:" + res.data.errorMsg);
       } else {
         this.total = res.data.total;
         this.tableData = res.data.rows;
@@ -136,7 +177,7 @@ export default {
         this.selected = {};
         const $this = this;
         //构建表格条形统计图的数据
-        this.tableData.forEach(function(e) {
+        this.tableData.forEach(function (e) {
           console.log(e)
           $this.xData.push(e.name);
           $this.yData.push(e.stock);
@@ -149,19 +190,19 @@ export default {
     },
 
     //改变页码
-    handleSizeChange(newSize) {
+    handleSizeChange (newSize) {
       this.queryMap.pageSize = newSize;
       this.getStockList();
     },
     //翻页
-    handleCurrentChange(current) {
+    handleCurrentChange (current) {
       this.queryMap.pageNum = current;
       this.getStockList();
     },
     /**
      * 绘制条形统计图
      */
-    draw() {
+    draw () {
       var myChart = echarts.init(document.getElementById("tianxing"));
       // 指定图表的配置项和数据
       var option = {
@@ -195,26 +236,26 @@ export default {
             showBackground: true,
             data: this.yData,
             itemStyle: {
-                    normal: {
-　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
-                        color: function(params) {
-                            // build a color map as your need.
-                            var colorList = [
-                              '#0780cf ','#fa6d1d ','#ac2026 ','#701866 ','#d22e8d ',
-                               '#FE8463','#a195c5 ','#FAD860','#F3A43B','#60C0DD',
-                               '#D7504B','#a195c5  ','#F4E001','#F0805A','#63b2ee'
-                            ];
-                            return colorList[params.dataIndex]
-                        },
-　　　　　　　　　　　　　　//以下为是否显示，显示位置和显示格式的设置了
-                        label: {
-                            show: true,
-                            position: 'top',
-//                             formatter: '{c}'
-                            formatter: '{b}\n{c}'
-                        }
-                    }
+              normal: {
+                //好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                color: function (params) {
+                  // build a color map as your need.
+                  var colorList = [
+                    '#0780cf ', '#fa6d1d ', '#ac2026 ', '#701866 ', '#d22e8d ',
+                    '#FE8463', '#a195c5 ', '#FAD860', '#F3A43B', '#60C0DD',
+                    '#D7504B', '#a195c5  ', '#F4E001', '#F0805A', '#63b2ee'
+                  ];
+                  return colorList[params.dataIndex]
                 },
+                //以下为是否显示，显示位置和显示格式的设置了
+                label: {
+                  show: true,
+                  position: 'top',
+                  //                             formatter: '{c}'
+                  formatter: '{b}\n{c}'
+                }
+              }
+            },
           },
 
         ]
@@ -226,7 +267,7 @@ export default {
     /**
      * 绘制饼图
      */
-    drawRound() {
+    drawRound () {
       var myChart = echarts.init(document.getElementById("bingtu"));
       var option = {
         title: {
@@ -234,7 +275,7 @@ export default {
 
           left: "left"
         },
-         toolbox: {
+        toolbox: {
           show: true,
           feature: {
             saveAsImage: {} // 导出图片
@@ -276,19 +317,19 @@ export default {
     /**
      * 物资所有的库存信息
      */
-    async findAllProductStocks() {
+    async findAllProductStocks () {
       const { data: res } = await this.$http.get("business/product/findAllStocks", {
         params: this.queryMap
       });
       if (!res.success) {
-        return this.$message.error("获取物资所有库存失败:"+res.data.errorMsg);
+        return this.$message.error("获取物资所有库存失败:" + res.data.errorMsg);
       } else {
         this.legendData = [];
         this.selected = {};
         this.seriesData = [{}];
         var $this = this;
         //构建饼图的数据对象
-        res.data.forEach(function(e) {
+        res.data.forEach(function (e) {
           $this.legendData.push(e.name);
           $this.seriesData.push({ name: e.name, value: e.stock });
         });
@@ -300,7 +341,7 @@ export default {
     /**
      * 分类搜索改变时
      */
-    selectChange() {
+    selectChange () {
       var str = "";
       for (var i = 0; i < this.categorykeys.length; i++) {
         str += this.categorykeys[i] + ",";
@@ -311,23 +352,23 @@ export default {
     /**
      * 加载物资类别
      */
-    async getCatetorys() {
+    async getCatetorys () {
       const { data: res } = await this.$http.get(
-              "business/productCategory/categoryTree"
+        "business/productCategory/categoryTree"
       );
       if (!res.success) {
-        return this.$message.error("获取物资类别失败:"+res.data.errorMsg);
+        return this.$message.error("获取物资类别失败:" + res.data.errorMsg);
       } else {
         this.catetorys = res.data.rows;
       }
     },
   },
-  created() {
+  created () {
     this.getStockList();
     this.getCatetorys();
     this.findAllProductStocks();
   },
-  mounted: function() {
+  mounted: function () {
     this.draw();
     this.drawRound();
   }
