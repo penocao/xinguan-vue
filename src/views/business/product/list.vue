@@ -684,7 +684,7 @@ export default {
           this.btnDisabled = true;
           this.btnLoading = true;
           const { data: res } = await this.$http.post(
-            "product/add",
+            "/business/product/add",
             this.addRuleForm
           );
           if (res.success) {

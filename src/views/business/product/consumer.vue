@@ -1,7 +1,10 @@
 <template>
   <div id="productCategroys">
     <!-- 面包导航 -->
-    <el-breadcrumb separator="/" style="padding-left:10px;padding-bottom:10px;font-size:12px;">
+    <el-breadcrumb
+      separator="/"
+      style="padding-left: 10px; padding-bottom: 10px; font-size: 12px"
+    >
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>物资流向</el-breadcrumb-item>
       <el-breadcrumb-item>物资去处</el-breadcrumb-item>
@@ -9,12 +12,27 @@
     <!-- 右侧卡片区域 -->
     <!-- 用户列表卡片区 -->
     <el-card class="box-card">
-      <el-form size="small" :inline="true" :model="queryMap" class="demo-form-inline">
+      <el-form
+        size="small"
+        :inline="true"
+        :model="queryMap"
+        class="demo-form-inline"
+      >
         <el-form-item label="省市区县">
-          <el-input v-model="queryMap.address" clearable @clear="search" placeholder="省市区县"></el-input>
+          <el-input
+            v-model="queryMap.address"
+            clearable
+            @clear="search"
+            placeholder="省市区县"
+          ></el-input>
         </el-form-item>
         <el-form-item label="联系人">
-          <el-input v-model="queryMap.contact" clearable @clear="search" placeholder="联系人"></el-input>
+          <el-input
+            v-model="queryMap.contact"
+            clearable
+            @clear="search"
+            placeholder="联系人"
+          ></el-input>
         </el-form-item>
         <el-form-item label="具体地点">
           <el-input
@@ -26,8 +44,16 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
-          <el-button type="success" icon="el-icon-circle-plus-outline" v-hasPermission="'consumer:add'" @click="openAdd">添加</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="search"
+            >查询</el-button
+          >
+          <el-button
+            type="success"
+            icon="el-icon-circle-plus-outline"
+            v-hasPermission="'consumer:add'"
+            @click="openAdd"
+            >添加</el-button
+          >
         </el-form-item>
       </el-form>
 
@@ -39,63 +65,86 @@
           v-loading="loading"
           stripe
           :data="consumerData"
-          style="width: 100%;"
+          style="width: 100%"
           height="460"
         >
-          <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
+          <el-table-column
+            prop="id"
+            type="index"
+            label="ID"
+            width="50"
+          ></el-table-column>
           <el-table-column label="物资去向地址">
-            <el-table-column
-                    prop="address"
-                    label="省份"
-                    width="120">
+            <el-table-column prop="address" label="省份" width="120">
               <template slot-scope="scope">
                 <span v-text="scope.row.address.split('/')[0]"></span>
               </template>
             </el-table-column>
-            <el-table-column
-                    prop="address"
-                    label="市"
-                    width="120">
+            <el-table-column prop="address" label="市" width="120">
               <template slot-scope="scope">
                 <span v-text="scope.row.address.split('/')[1]"></span>
               </template>
             </el-table-column>
-            <el-table-column
-                    prop="address"
-                    label="区县"
-                    width="100">
+            <el-table-column prop="address" label="区县" width="100">
               <template slot-scope="scope">
                 <span v-text="scope.row.address.split('/')[2]"></span>
               </template>
             </el-table-column>
-            <el-table-column
-                    prop="name"
-                    label="地址"
-                    width="200">
+            <el-table-column prop="name" label="地址" width="200">
             </el-table-column>
           </el-table-column>
 
-          <el-table-column prop="createTime" label="创建时间" width="190"></el-table-column>
-          <el-table-column prop="contact" label="联系人" width="140"></el-table-column>
-          <el-table-column prop="phone" label="电话" width="140"></el-table-column>
-          <el-table-column prop="sort" label="排序" width="100"></el-table-column>
+          <el-table-column
+            prop="createTime"
+            label="创建时间"
+            width="190"
+          ></el-table-column>
+          <el-table-column
+            prop="contact"
+            label="联系人"
+            width="140"
+          ></el-table-column>
+          <el-table-column
+            prop="phone"
+            label="电话"
+            width="140"
+          ></el-table-column>
+          <el-table-column
+            prop="sort"
+            label="排序"
+            width="100"
+          ></el-table-column>
           <el-table-column label="操作" fixed="right" width="150">
             <template slot-scope="scope">
-              <el-button v-hasPermission="'consumer:edit'" type="text" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)">编辑</el-button>
+              <el-button
+                v-hasPermission="'consumer:edit'"
+                type="text"
+                size="mini"
+                icon="el-icon-edit"
+                @click="edit(scope.row.id)"
+                >编辑</el-button
+              >
 
-              <el-button v-hasPermission="'consumer:delete'" type="text" size="mini" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
+              <el-button
+                v-hasPermission="'consumer:delete'"
+                type="text"
+                size="mini"
+                icon="el-icon-delete"
+                @click="del(scope.row.id)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
       </template>
       <!-- 分页 -->
       <el-pagination
-        style="margin-top:10px;"
+        style="margin-top: 10px"
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="this.queryMap.pageNum"
-        :page-sizes="[ 10, 15, 20]"
+        :page-sizes="[10, 15, 20]"
         :page-size="this.queryMap.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -183,7 +232,12 @@
             </el-form-item>
 
             <el-form-item label="排序" prop="sort">
-              <el-input-number v-model="addRuleForm.sort" :min="1" :max="10" label="排序"></el-input-number>
+              <el-input-number
+                v-model="addRuleForm.sort"
+                :min="1"
+                :max="10"
+                label="排序"
+              ></el-input-number>
             </el-form-item>
           </el-form>
         </span>
@@ -223,7 +277,12 @@
             </el-form-item>
 
             <el-form-item label="排序" prop="sort">
-              <el-input-number v-model="editRuleForm.sort" :min="1" :max="10" label="排序"></el-input-number>
+              <el-input-number
+                v-model="editRuleForm.sort"
+                :min="1"
+                :max="10"
+                label="排序"
+              ></el-input-number>
             </el-form-item>
           </el-form>
         </span>
@@ -238,7 +297,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     const checkPhone = (rule, value, callback) => {
       const phoneReg = /^1[34578]\d{9}$$/;
       if (!value) {
@@ -307,17 +366,17 @@ export default {
     /**
      * 打开添加弹出框
      */
-    openAdd() {
+    openAdd () {
       this.addDialogVisible = true;
       this._getJsonData();
     },
     //搜索
-    search() {
+    search () {
       this.queryMap.pageNum = 1;
       this.getConsumerList();
     },
     //删除物资去处
-    async del(id) {
+    async del (id) {
       var res = await this.$confirm(
         "此操作将永久删除该用户, 是否继续?",
         "提示",
@@ -343,7 +402,7 @@ export default {
       }
     },
     //更新用户
-    async update() {
+    async update () {
       this.$refs.editRuleFormRef.validate(async valid => {
         if (!valid) {
           return;
@@ -371,7 +430,7 @@ export default {
     /**
      * 编辑
      */
-    async edit(id) {
+    async edit (id) {
       this._getJsonData();
       const { data: res } = await this.$http.get("business/consumer/edit/" + id);
       if (res.success) {
@@ -382,7 +441,7 @@ export default {
       this.editDialogVisible = true;
     },
     //添加
-    add() {
+    add () {
       this.$refs.addRuleFormRef.validate(async valid => {
         if (!valid) {
           console.log(this.addRuleForm);
@@ -395,7 +454,7 @@ export default {
             "/" +
             this.addRuleForm.origin;
           const { data: res } = await this.$http.post(
-            "consumer/add",
+            "/business/consumer/add",
             this.addRuleForm
           );
           if (res.success) {
@@ -412,12 +471,12 @@ export default {
     /**
      * 加载物资去处列表
      */
-    async getConsumerList() {
+    async getConsumerList () {
       const { data: res } = await this.$http.get("business/consumer/findConsumerList", {
         params: this.queryMap
       });
       if (!res.success) {
-        return this.$message.error("获取用户列表失败:"+res.data.errorMsg);
+        return this.$message.error("获取用户列表失败:" + res.data.errorMsg);
       } else {
         this.total = res.data.total;
         this.consumerData = res.data.rows;
@@ -425,17 +484,17 @@ export default {
     },
 
     //改变页码
-    handleSizeChange(newSize) {
+    handleSizeChange (newSize) {
       this.queryMap.pageSize = newSize;
       this.getConsumerList();
     },
     //翻页
-    handleCurrentChange(current) {
+    handleCurrentChange (current) {
       this.queryMap.pageNum = current;
       this.getConsumerList();
     },
     //关闭弹出框
-    closeAddDialog() {
+    closeAddDialog () {
       this.$refs.addRuleFormRef.clearValidate();
 
       this.valueProvince = "";
@@ -448,12 +507,12 @@ export default {
       this.addRuleForm = {};
     },
     //关闭弹出框
-    closeEditDialog() {
+    closeEditDialog () {
       this.$refs.editRuleFormRef.clearValidate();
       this.editRuleForm = {};
     },
     // 选择省
-    changeProvince(val) {
+    changeProvince (val) {
       this.provinceList.forEach((province, index) => {
         if (val.toString() === this.provinceList[index].value) {
           this.cityOptions = this.provinceList[index].children;
@@ -476,7 +535,7 @@ export default {
       });
     },
     // 选择市
-    changeCity(val) {
+    changeCity (val) {
       this.cityList.forEach((city, index) => {
         if (val.toString() === this.cityList[index].value) {
           this.originOptions = this.cityList[index].children;
@@ -487,7 +546,7 @@ export default {
       });
     },
     // 选择区
-    changeOrigin(val) {
+    changeOrigin (val) {
       this.addRuleForm.valueOrigin = val;
 
       this.originList.forEach((origin, index) => {
@@ -500,7 +559,7 @@ export default {
       this.$forceUpdate();
     },
 
-    _getJsonData() {
+    _getJsonData () {
       this.$http.get("/json/provinces.json").then(res => {
         this.provinceList = [];
         this.cityList = [];
@@ -548,7 +607,7 @@ export default {
       });
     }
   },
-  created() {
+  created () {
     this._getJsonData();
     this.getConsumerList();
     setTimeout(() => {
